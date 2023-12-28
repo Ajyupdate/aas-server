@@ -1,9 +1,12 @@
 
 const express = require('express')
 const dotenv = require("dotenv")
-const sequelize = require("./connection/db")
+// const sequelize = require("./connection/db")
 const app = express();
 const Employee = require("../models/Employee")
+const Sponsor = require('../models/Sponsor')
+const SponsorRoute = require("../routes/sponsor")
+const Task = require("../models/Task")
 // import db from "../models"
 // import UserModel from '../models/User'
 app.use(express.json());
@@ -11,13 +14,18 @@ app.use(express.json());
 dotenv.config();
 const port = 3001
 
-const database = process.env.PROD_DATABASE;
-const user = process.env.PROD_USERNAME;
-const password = process.env.PROD_PASSWORD;
-const host = process.env.PROD_HOST;
-const name = process.env.name
 
+app.get('/task', async (req, res) => {
+    try {
+      const tasks = await Task.findAll();
+      res.json(tasks);
+    } catch (error) {
+      console.error('Error getting tasks:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
 
+app.use("/sponsors", SponsorRoute)
 // Get all employees
 app.get('/employees', async (req, res) => {
     try {
