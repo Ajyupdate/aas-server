@@ -7,6 +7,7 @@ const Employee = require("../models/Employee")
 const Sponsor = require('../models/Sponsor')
 const SponsorRoute = require("../routes/sponsor")
 const Task = require("../models/Task")
+const StudentRoute = require("../routes/student")
 // import db from "../models"
 // import UserModel from '../models/User'
 app.use(express.json());
@@ -25,7 +26,10 @@ app.get('/task', async (req, res) => {
     }
   });
 
+
+  
 app.use("/sponsors", SponsorRoute)
+app.use("/students", StudentRoute)
 // Get all employees
 app.get('/employees', async (req, res) => {
     try {

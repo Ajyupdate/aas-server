@@ -1,13 +1,13 @@
-
+// models/Student.js
 
 const { DataTypes } = require('sequelize');
-const sequelize = require('../src/connection/db'); 
+const sequelize = require('../src/connection/db');
 
-const sponsor = sequelize.define('sponsors', {
-  id: {
+const student = sequelize.define('students', {
+  student_id: {
     type: DataTypes.INTEGER,
-    primaryKey: true,
     autoIncrement: true,
+    primaryKey: true,
   },
   first_name: {
     type: DataTypes.STRING,
@@ -19,24 +19,24 @@ const sponsor = sequelize.define('sponsors', {
   },
   date_of_birth: {
     type: DataTypes.DATE,
+    allowNull: false,
   },
   gender: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(10),
+    allowNull: false,
   },
   email: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
   },
   address: {
     type: DataTypes.STRING,
   },
   phone_number: {
-    type: DataTypes.STRING,
-    unique: true
+    type: DataTypes.STRING(20),
   },
   username: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(50),
     allowNull: false,
     unique: true,
   },
@@ -47,21 +47,22 @@ const sponsor = sequelize.define('sponsors', {
   profile_picture_url: {
     type: DataTypes.STRING,
   },
-  alumni:{
-    type: DataTypes.STRING,
-
+  faculty: {
+    type: DataTypes.STRING(50),
+    allowNull: false,
   },
-  role: {
-    type: DataTypes.STRING,
+  department: {
+    type: DataTypes.STRING(50),
+    allowNull: false,
   },
   createdAt: {
     type: DataTypes.DATE,
-    allowNull: false,
+    defaultValue: DataTypes.NOW,
   },
   updatedAt: {
     type: DataTypes.DATE,
-    allowNull: false,
+    defaultValue: DataTypes.NOW,
   },
 });
 
-module.exports = sponsor;
+module.exports = student;
