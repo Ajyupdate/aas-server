@@ -5,8 +5,8 @@ const sequelize = require('../src/connection/db');
 
 const student = sequelize.define('students', {
   student_id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
   },
   first_name: {
@@ -63,6 +63,10 @@ const student = sequelize.define('students', {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
   },
+  saved_posts:{
+    type: DataTypes.ARRAY(DataTypes.CHAR),
+    defaultValue: [],
+  }
 });
 
 module.exports = student;

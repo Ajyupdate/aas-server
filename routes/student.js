@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Student  = require('../models/Students'); // Replace with the actual path to your Sequelize models
-
+const {v4: uuidv4} = require("uuid")
 // GET route to fetch all students
 router.get("", async (req, res) => {
   try {
@@ -34,8 +34,10 @@ router.post('', async (req, res) => {
       department,
     } = req.body;
 
+    const student_id = uuidv4();
     // Create a new student using Sequelize's create method
     const newStudent = await Student.create({
+      student_id,
       first_name,
       last_name,
       date_of_birth,
