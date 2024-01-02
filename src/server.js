@@ -1,17 +1,22 @@
-
+const cors = require("cors")
 const express = require('express')
 const dotenv = require("dotenv")
 // const sequelize = require("./connection/db")
 const app = express();
 const Employee = require("../models/Employee")
-const Sponsor = require('../models/Sponsor')
+
 const SponsorRoute = require("../routes/sponsor")
 const Task = require("../models/Task")
 const StudentRoute = require("../routes/student")
-// import db from "../models"
-// import UserModel from '../models/User'
+const PostRoute = require("../routes/posts")
+
+app.use(cors());
+const corsOptions = {
+  origin: "*",
+}
+app.use(cors(corsOptions))
 app.use(express.json());
-// const db = require("../models")
+
 dotenv.config();
 const port = 3001
 
@@ -30,6 +35,7 @@ app.get('/task', async (req, res) => {
   
 app.use("/sponsors", SponsorRoute)
 app.use("/students", StudentRoute)
+app.use("/posts", PostRoute)
 // Get all employees
 app.get('/employees', async (req, res) => {
     try {

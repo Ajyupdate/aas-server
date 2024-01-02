@@ -62,6 +62,10 @@ const sponsor = sequelize.define('sponsors', {
     type: DataTypes.DATE,
     allowNull: false,
   },
+  saved_posts:{
+    type: DataTypes.ARRAY(DataTypes.CHAR),
+    defaultValue: [],
+  }
 });
 
 module.exports = sponsor;
