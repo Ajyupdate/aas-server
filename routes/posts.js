@@ -22,6 +22,24 @@ router.get('', async (req, res) => {
   }
 });
 
+router.get("/:id", async(req, res) => {
+  const id = req.params.id
+  console.log(id, "what is it")
+  try{
+    const post = await Post.findByPk(id, {
+      include: [{
+        model: Student,
+        as: 'student',
+      }],
+    })
+    
+    res.status(200).json(post);
+  }catch (error) {
+    console.error('Error fetching posts:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+})
+
 router.post('', async (req, res) => {
     try {
       const {

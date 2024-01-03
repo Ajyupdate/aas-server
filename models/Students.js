@@ -66,6 +66,10 @@ const student = sequelize.define('students', {
   saved_posts:{
     type: DataTypes.ARRAY(DataTypes.CHAR),
     defaultValue: [],
+  },
+  school:{
+    type: DataTypes.STRING(244),
+    allowNull: false,
   }
 });
 
