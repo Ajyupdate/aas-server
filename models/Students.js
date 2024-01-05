@@ -68,8 +68,11 @@ const student = sequelize.define('students', {
     defaultValue: [],
   },
   school:{
-    type: DataTypes.STRING(244),
+    type: DataTypes.STRING(50),
     allowNull: false,
+  },
+  matric_no:{
+    type: DataTypes.BIGINT(255)
   }
 });
 
