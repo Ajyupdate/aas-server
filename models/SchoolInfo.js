@@ -1,11 +1,18 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../src/connection/db'); 
-
+const {Student} = require('./Students')
 const SchoolInfo = sequelize.define('school_info', {
-  matric_no: {
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
-    primaryKey: true,
+    student_id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
+    },
+    matric_no: {
+    type: DataTypes.BIGINT,
+    allowNull: false,
+    
+    // defaultValue: DataTypes.UUIDV4,
+    
   },
   first_name: {
     type: DataTypes.STRING,
@@ -38,8 +45,8 @@ const SchoolInfo = sequelize.define('school_info', {
   });
 
 SchoolInfo.belongsTo(require('./Students'), {
-  foreignKey: 'matric_no',
-  targetKey: 'matric_no',
+  foreignKey: 'student_id',
+  targetKey: 'student_id',
   as: 'student', // alias to use when querying
 });
 
