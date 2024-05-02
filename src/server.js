@@ -8,20 +8,68 @@ const axios = require('axios');
 const SponsorRoute = require("../routes/sponsor")
 const Task = require("../models/Task")
 const StudentRoute = require("../routes/student")
+const AuthRoute = require("../routes/auth")
 const PostRoute = require("../routes/posts")
 const SchoolInfoRoute = require("../routes/school-info")
 
-app.use(cors());
-const corsOptions = {
-  origin: "*",
-}
-app.use(cors(corsOptions))
+const keys = require("../config/keys")
+const passport = require("passport")
+const GoogleStrategy = require('passport-google-oauth20').Strategy
+
+// app.use(cors());
+// const corsOptions = {
+//   origin: "*",
+// }
+// app.use(cors(corsOptions))
 app.use(express.json());
+app.use(passport.initialize())
+
+passport.use(
+  new GoogleStrategy({
+      callbackURL: '/auth/google/redirect',
+      clientID: keys.google.clientID,
+      clientSecret: keys.google.clientSecret
+  }, () => {
+      
+  })
+)
 
 dotenv.config();
 const port = 3001
 
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
+
 const PAYSTACK_SECRET_KEY = 'sk_test_2c15b3a1cab333903e9b5dc97cbd199c81c9c745';
+
+app.get('/auth/google',
+
+(req, res, next) => {
+    console.log("Before passport.authenticate middleware");
+    next(); // Call next to proceed to the next middleware
+},
+  passport.authenticate('google', 
+  
+  { scope: ['profile', 'email'] }));
+
+// Define route for handling authentication callback
+app.get('/auth/google/callback',
+(req, res, next) => {
+  console.log("passport.authenticate middleware");
+  next(); // Call next to proceed to the next middleware
+},
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  (req, res) => {
+    // Successful authentication, redirect to a success page or user dashboard
+    res.redirect('/dashboard');
+  }
+);
+
 
 app.post('/initialize-payment', async (req, res) => {
   console.log(req.body.email)
@@ -58,7 +106,7 @@ app.get('/task', async (req, res) => {
   });
 
 
-  
+// app.use("/auth", AuthRoute)
 app.use("/sponsors", SponsorRoute)
 app.use("/students", StudentRoute)
 app.use("/posts", PostRoute)
