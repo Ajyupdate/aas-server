@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const Sponsors = require("../models/Sponsor")
 const router = Router();
+const {v4: uuidv4} = require("uuid")
 
 router.get("", async(req, res) => {
     try{
@@ -29,8 +30,9 @@ router.post('/add', async (req, res) => {
         alumni,
         role,
       } = req.body;
-  
+      const sponsor_id = uuidv4();
       const newSponsor = await Sponsors.create({
+        sponsor_id,
         first_name,
         last_name,
         date_of_birth,
