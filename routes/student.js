@@ -18,6 +18,7 @@ router.get("", async (req, res) => {
 
 
 router.post('', async (req, res) => {
+ 
   try {
     const {
       first_name,
@@ -30,6 +31,8 @@ router.post('', async (req, res) => {
       username,
       password,
       profile_picture_url,
+      school,
+      matric_no,
       faculty,
       department,
     } = req.body;
@@ -48,6 +51,8 @@ router.post('', async (req, res) => {
       username,
       password,
       profile_picture_url,
+      school,
+      matric_no,
       faculty,
       department,
     });

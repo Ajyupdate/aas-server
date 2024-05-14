@@ -34,6 +34,7 @@ const password = process.env.PROD_PASSWORD;
 const host = process.env.PROD_HOST;
 
 
+
 if (!database || !user || !password) {
     throw new Error(
         "Missing required environment variables for database connection"
@@ -43,7 +44,14 @@ if (!database || !user || !password) {
 const sequelize = new Sequelize(database, user, password, {
     host: host,
     dialect: "postgres",
-    logging: console.log,
+    dialectOptions: {
+        ssl: {
+            require: true,
+            rejectUnauthorized: false
+        }
+    }
+    // logging: console.log,
+    // ssl: true
 });
 
 sequelize

@@ -4,7 +4,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../src/connection/db'); 
 
 const sponsor = sequelize.define('sponsors', {
-  id: {
+  sponsor_id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
