@@ -36,18 +36,17 @@ passport.use(
 
 dotenv.config();
 const port = 3001
+app.use(cors());
+// app.use(express.json());
+// app.use(express.urlencoded({extended: false}))
 
-const allowedOrigins = ['http://localhost:3000', 'https://aas-ui.vercel.app/'];
-
-app.use((req, res, next) => {
-const origin = req.headers.origin;
- if (allowedOrigins.includes(origin)) {
- res.setHeader('Access-Control-Allow-Origin', origin); }
- res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
- res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
- res.setHeader('Access-Control-Allow-Credentials', true);
- next();
-});
+// app.use((req, res, next) => {
+//   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+//   res.setHeader('Access-Control-Allow-Credentials', true);
+//   next();
+// });
 
 const PAYSTACK_SECRET_KEY = 'sk_test_2c15b3a1cab333903e9b5dc97cbd199c81c9c745';
 
