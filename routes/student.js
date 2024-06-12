@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Student  = require('../models/Students'); // Replace with the actual path to your Sequelize models
 const {v4: uuidv4} = require("uuid")
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken')
 // GET route to fetch all students
 router.get("", async (req, res) => {
   try {
@@ -37,7 +39,9 @@ router.post('', async (req, res) => {
       department,
     } = req.body;
 
+    const hashedPassword = await bcrypt.hash(password, 10);
     const student_id = uuidv4();
+    console.log(student_id)
     // Create a new student using Sequelize's create method
     const newStudent = await Student.create({
       student_id,
@@ -49,7 +53,7 @@ router.post('', async (req, res) => {
       address,
       phone_number,
       username,
-      password,
+      password: hashedPassword,
       profile_picture_url,
       school,
       matric_no,
@@ -108,4 +112,38 @@ router.delete('/:id', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+// routes/auth.js
+router.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  
+  if (!username || !password) {
+    return res.status(400).json({ message: 'Username and password are required' });
+  }
+
+  try {
+    const user = await Student.findOne({ where: { username } });
+    
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, {
+      expiresIn: '1h',
+    });
+
+    res.json({ token, ...user.toJSON()});
+  } catch (err) {
+    res.status(500).json({ message: 'Login failed', error: err.message });
+  }
+});
+
+
 module.exports = router;
